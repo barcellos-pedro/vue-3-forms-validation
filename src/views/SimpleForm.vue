@@ -1,85 +1,48 @@
 <template>
   <div>
     <h1>Create an event</h1>
-    <form>
-
-      <label>Select a category</label>
-      <select v-model="event.category">
-        <option
-          v-for="option in categories"
-          :value="option"
-          :key="option"
-          :selected="option === event.category"
-        >{{ option }}</option>
-      </select>
-
-      <h3>Name & describe your event</h3>
-
-      <label>Title</label>
-      <input
-        v-model="event.title"
-        type="text"
-        placeholder="Title"
-        class="field"
-      >
-
-      <label>Description</label>
-      <input
-        v-model="event.description"
-        type="text"
-        placeholder="Description"
-        class="field"
+    <form @submit.prevent="sendForm">
+      <BaseSelect
+        label="Select a category"
+        v-model="event.category"
+        :options="categories"
       />
 
-      <h3>Where is your event?</h3>
+      <fieldset>
+        <legend>Name & describe your event</legend>
+        <BaseInput v-model="event.title" label="Title" type="text" error="This input has an error" />
+        <BaseInput v-model="event.description" label="Description" type="text" />
+      </fieldset>
 
-      <label>Location</label>
-      <input
-        v-model="event.location"
-        type="text"
-        placeholder="Location"
-        class="field"
-      />
+      <fieldset>
+        <legend>Where is your event?</legend>
+        <BaseInput v-model="event.location" label="Location" type="text" />
+      </fieldset>
 
-      <h3>Are pets allowed?</h3>
-      <div>
-        <input
-            type="radio"
+      <fieldset>
+        <legend>Pets</legend>
+
+        <p>Are pets allowed?</p>
+        <div>
+          <BaseRadioGroup
             v-model="event.pets"
-            :value="1"
             name="pets"
+            :options="petOptions"
+            vertical
           />
-        <label>Yes</label>
-      </div>
+        </div>
+      </fieldset>
 
-      <div>
-        <input
-          type="radio"
-          v-model="event.pets"
-          :value="0"
-          name="pets"
-        />
-        <label>No</label>
-      </div>
+      <fieldset>
+        <legend>Extras</legend>
+        <div>
+          <BaseCheckbox label="Catering" v-model="event.extras.catering" />
+        </div>
 
-      <h3>Extras</h3>
-      <div>
-        <input
-          type="checkbox"
-          v-model="event.extras.catering"
-          class="field"
-        />
-        <label>Catering</label>
-      </div>
-
-      <div>
-        <input
-          type="checkbox"
-          v-model="event.extras.music"
-          class="field"
-        />
-        <label>Live music</label>
-      </div>
+        <div>
+          <BaseCheckbox label="Live music" v-model="event.extras.music" />
+        </div>
+      </fieldset>
 
       <button class="button -fill-gradient" type="submit">Submit</button>
     </form>
@@ -87,7 +50,15 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+import BaseInput from '../components/BaseInput.vue'
+import BaseSelect from '../components/BaseSelect.vue'
+import BaseCheckbox from '../components/BaseCheckbox.vue'
+import BaseRadioGroup from '../components/BaseRadioGroup.vue'
+
 export default {
+  components: { BaseInput, BaseSelect, BaseCheckbox, BaseRadioGroup },
   data () {
     return {
       categories: [
@@ -109,8 +80,41 @@ export default {
           catering: false,
           music: false
         }
-      }
+      },
+      petOptions: [
+        { label: 'Yes', value: 1 },
+        { label: 'No', value: 0 }
+      ]
+    }
+  },
+  methods: {
+    sendForm () {
+      axios
+        .post(
+          'https://my-json-server.typicode.com/Code-Pop/Vue-3-Forms/events',
+          this.event
+        )
+        .then(response => {
+          console.log(response)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
 </script>
+
+<style>
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+</style>

@@ -3,6 +3,7 @@ import App from './App.vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
+// Auto import Base Components
 const requireComponent = require.context(
   './components',
   false,
@@ -18,6 +19,7 @@ requireComponent.keys().forEach(fileName => {
     camelCase(fileName.replace(/^\.\/(.*)\.\w+$/, '$1'))
   )
 
+  // Register component
   app.component(componentName, componentConfig.default || componentConfig)
 })
 

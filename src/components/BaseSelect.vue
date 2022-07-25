@@ -22,46 +22,32 @@
       :value="option"
       :key="option"
       :selected="option === modelValue"
+      >{{ option }}</option
     >
-      {{ option }}
-    </option>
   </select>
-  <BaseErrorMessage
-    v-if="error"
-    :id="`${uuid}-error`"
-  >
-    {{ error }}
-  </BaseErrorMessage>
 </template>
 
 <script>
-import SetupFormComponent from '@/features/SetupFormComponent'
-import UniqueID from '@/features/UniqueID'
+import UniqueID from '../features/UniqueID'
 
 export default {
   props: {
-    options: {
-      type: Array,
-      required: true
-    },
     label: {
       type: String,
       default: ''
     },
-    error: {
-      type: String,
+    modelValue: {
+      type: [String, Number],
       default: ''
     },
-    modelValue: {
-      type: [String, Number]
+    options: {
+      type: Array,
+      required: true
     }
   },
-  setup (props, context) {
-    const { updateValue } = SetupFormComponent(props, context)
+  setup () {
     const uuid = UniqueID().getID()
-
     return {
-      updateValue,
       uuid
     }
   }
