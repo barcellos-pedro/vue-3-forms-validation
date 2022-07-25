@@ -1,18 +1,20 @@
 <template>
-  <component
-    v-for="option in options"
-    :key="option.value"
-    :is="wrapperTag"
-    :class="{ 'space-right': !vertical }"
-  >
-    <BaseRadio
-      :name="name"
-      :label="option.label"
-      :value="option.value"
-      :modelValue="modelValue"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-  </component>
+  <div>
+    <component
+      v-for="option in options"
+      :key="option.value"
+      :is="wrapperTag"
+      :class="{ 'space-right': !vertical }"
+    >
+      <BaseRadio
+        :name="name"
+        :label="option.label"
+        :value="option.value"
+        :modelValue="modelValue"
+        @update:modelValue="$emit('update:modelValue', $event)"
+      />
+    </component>
+  </div>
 </template>
 
 <script>
