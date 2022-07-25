@@ -81,10 +81,8 @@
         <label>Live music</label>
       </div>
 
-      <button type="submit">Submit</button>
+      <button class="button -fill-gradient" type="submit">Submit</button>
     </form>
-
-    <pre>{{ event }}</pre>
   </div>
 </template>
 
