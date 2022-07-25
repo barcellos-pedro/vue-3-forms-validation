@@ -1,21 +1,15 @@
 <template>
-  <label
-    v-if="label"
-    :for="uuid"
-  >
+  <label v-if="label" :for="uuid">
     {{ label }}
   </label>
   <select
     class="field"
     v-bind="{
       ...$attrs,
-      onChange: updateValue
+      onChange: $event => $emit('update:modelValue', $event.target.value)
     }"
     :value="modelValue"
     :id="uuid"
-    :aria-describedby="error ? `${uuid}-error` : null"
-    :aria-invalid="error ? true : false"
-    :class="{ error }"
   >
     <option
       v-for="option in options"
